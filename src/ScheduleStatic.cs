@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using PlasticMetal.MobileSuit.Logging;
 using PlasticMetal.MobileSuit.Core;
 
 namespace HitRefresh.Schedule
@@ -126,12 +127,13 @@ namespace HitRefresh.Schedule
             /// </summary>
             Unknown = -1
         }
+
         /// <summary>
         /// Logger
         /// </summary>
-        public static Logger Logger { get; } =
-        //ILogger.OfFile("D:\\HSM.log");
-        ILogger.OfTemp();
+        public static ISuitLogger Logger { get; } =
+            //ILogger.OfFile("D:\\HSM.log");
+            ISuitLogger.CreateEmpty();
 
         /// <summary>
         /// 老师的名字

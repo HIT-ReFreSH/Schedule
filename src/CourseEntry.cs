@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using static HitRefresh.Schedule.ScheduleStatic;
+using PlasticMetal.MobileSuit;
 
 namespace HitRefresh.Schedule
 {
@@ -62,7 +63,7 @@ namespace HitRefresh.Schedule
         public CourseEntry(string courseName)
         {
             CourseName = courseName;
-            Logger.LogDebug(courseName);
+            Logger.LogInformation(courseName);
 
 
         }

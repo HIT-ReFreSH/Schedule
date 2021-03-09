@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PlasticMetal.MobileSuit;
 using static HitRefresh.Schedule.ScheduleStatic;
 
 namespace HitRefresh.Schedule
@@ -122,7 +123,7 @@ namespace HitRefresh.Schedule
 
             //Parse Week Expression
             weekExpression = weekExpression.RemoveCommaSpace();
-            Logger.LogDebug("WE-Parsing: " + weekExpression);
+            Logger.LogInformation("WE-Parsing: " + weekExpression);
 
             var currentTeacher = "";
             var timeStack = new Stack<string>();
@@ -136,7 +137,7 @@ namespace HitRefresh.Schedule
                 TeacherNameRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Teacher :
                 CourseTimeRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Time :
                 ScheduleExpressionUnitType.Unknown;
-                Logger.LogDebug($"\t{unit} as {unitType}");
+                Logger.LogInformation($"\t{unit} as {unitType}");
 
                 switch (unitType)
                 {
