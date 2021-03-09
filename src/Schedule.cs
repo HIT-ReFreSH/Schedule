@@ -239,7 +239,7 @@ namespace HitRefresh.Schedule
         ///     课表学期开始的时间
         /// </summary>
         [JsonIgnore]
-        public DateTime SemesterStart => SemesterStarts[Year - 2020 + (int)Semester];
+        public DateTime SemesterStart => SemesterStarts[(Year - 2020)*3 + (int)Semester];
 
         /// <summary>
         ///     课表的学期
