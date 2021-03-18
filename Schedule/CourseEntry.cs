@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json.Serialization;
-using static HitRefresh.Schedule.ScheduleStatic;
+
 
 namespace HitRefresh.Schedule
 {

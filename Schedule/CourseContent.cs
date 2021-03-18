@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json.Serialization;
-using static HitRefresh.Schedule.ScheduleStatic;
+using HitRefresh.Schedule.ScheduleResource;
 
 namespace HitRefresh.Schedule
 {
@@ -32,21 +32,21 @@ namespace HitRefresh.Schedule
             IsLab = isLab;
 
             //Parse Week Expression
-            weekExpression = weekExpression.RemoveCommaSpace();
+            weekExpression = ResourceProvider.Resource.RemoveCommaSpace(weekExpression);
 
             var currentTeacher = "";
             var timeStack = new Stack<string>();
             var timeTeacherMap = new Dictionary<string, string>();
             var timeLocationMap = new Dictionary<string, string>();
 
-            foreach (var match in ScheduleExpressionUnitRegex.Matches(weekExpression))
+            foreach (var match in ResourceProvider.Resource.ScheduleExpressionUnitRegex.Matches(weekExpression))
             {
                 var unit = match?.ToString();
                 if (unit == null)
                     continue;
-                var unitType = LocationRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Location :
-                    TeacherNameRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Teacher :
-                    CourseTimeRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Time :
+                var unitType = ResourceProvider.Resource.LocationRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Location :
+                    ResourceProvider.Resource.TeacherNameRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Teacher :
+                    ResourceProvider.Resource.CourseTimeRegex.IsMatch(unit) ? ScheduleExpressionUnitType.Time :
                     ScheduleExpressionUnitType.Unknown;
 
                 switch (unitType)
@@ -71,7 +71,7 @@ namespace HitRefresh.Schedule
             while (timeStack.Count > 0) timeLocationMap.Add(timeStack.Pop(), "<地点待定>");
 
             foreach (var time in timeTeacherMap.Keys)
-            foreach (var weekIndex in time.ToIntSequence())
+            foreach (var weekIndex in ResourceProvider.Resource.ToIntSequence(time))
                 WeekInformation.Add(weekIndex, new()
                 {
                     Name = CourseName,
@@ -129,7 +129,7 @@ namespace HitRefresh.Schedule
         ///     课程开始的时间距离0点的时长
         /// </summary>
         [JsonIgnore]
-        public TimeSpan StartTime => StartTimes[(int) CourseTime];
+        public TimeSpan StartTime => ResourceProvider.Resource.StartTimes[(int) CourseTime];
 
         /// <summary>
         ///     周数信息，包含上课的周和对应的教师、教室

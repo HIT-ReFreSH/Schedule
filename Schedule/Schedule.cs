@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using ExcelDataReader;
+using HitRefresh.Schedule.ScheduleResource;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
-using static HitRefresh.Schedule.ScheduleStatic;
 using Calendar = Ical.Net.Calendar;
 
 namespace HitRefresh.Schedule
@@ -118,7 +118,7 @@ namespace HitRefresh.Schedule
         ///     课表学期开始的时间
         /// </summary>
         [JsonIgnore]
-        public DateTime SemesterStart => SemesterStarts[(Year - 2020) * 3 + (int) Semester];
+        public DateTime SemesterStart => ResourceProvider.Resource.SemesterStarts[(Year - 2020) * 3 + (int) Semester];
 
         /// <summary>
         ///     课表的学期
