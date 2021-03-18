@@ -15,10 +15,6 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: true
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.101
     - name: Setup coverage tool
       run: choco install opencover.portable codecov -y
     - name: Install dependencies
