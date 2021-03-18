@@ -25,6 +25,8 @@ namespace HitRefresh.Schedule
     /// </summary>
     public class ScheduleEntity : IEnumerable<CourseEntry>
     {
+        private readonly IList<DateTime> _semesterStarts;
+
         /// <summary>
         /// 导出到json
         /// </summary>
@@ -38,8 +40,8 @@ namespace HitRefresh.Schedule
             DisableWeekIndex = DisableWeekIndex,
             Semester = Semester,
             Year = Year,
-            Entries = Entries.Select(e => e.ToJson()).ToList()
-
+            Entries = Entries.Select(e => e.ToJson()).ToList(),
+            ScheduleConst = _semesterStarts
         });
         /// <summary>
         /// 从json加载课表
@@ -49,7 +51,7 @@ namespace HitRefresh.Schedule
         public static ScheduleEntity FromJson(string jsonContent)
         {
             var j = JsonConvert.DeserializeObject<ScheduleJson>(jsonContent);
-            var r = new ScheduleEntity(j.Year, j.Semester)
+            var r = new ScheduleEntity(j.Year, j.Semester, j.ScheduleConst)
             {
                 EnableNotification = j.EnableNotification,
                 DisableWeekIndex = j.DisableWeekIndex,
@@ -68,6 +70,7 @@ namespace HitRefresh.Schedule
         }
         private class ScheduleJson
         {
+            public IList<DateTime> ScheduleConst { get; set; } = new List<DateTime>();
             /// <summary>
             /// 日历映射系统
             /// </summary>
@@ -152,17 +155,19 @@ namespace HitRefresh.Schedule
         /// </summary>
         public int NotificationTime { get; set; } = 25;
 
+
         /// <summary>
         ///     指定年份和学期创建空的课表
         /// </summary>
         /// <param name="year">要创建课表的年份</param>
         /// <param name="semester">要创建课表的学期</param>
-        public ScheduleEntity(int year, Semester semester)
+        /// <param name="semesterStarts"></param>
+        public ScheduleEntity(int year, Semester semester, IList<DateTime> semesterStarts)
         {
             Year = year;
             Semester = semester;
+            _semesterStarts = semesterStarts;
         }
-
         /// <summary>
         ///     创建空的课表，学期和季节为默认
         /// </summary>
@@ -239,7 +244,7 @@ namespace HitRefresh.Schedule
         ///     课表学期开始的时间
         /// </summary>
         [JsonIgnore]
-        public DateTime SemesterStart => SemesterStarts[(Year - 2020)*3 + (int)Semester];
+        public DateTime SemesterStart => _semesterStarts[(Year - 2020) * 3 + (int)Semester];
 
         /// <summary>
         ///     课表的学期
@@ -252,12 +257,15 @@ namespace HitRefresh.Schedule
         /// <param name="inputStream">输入的流</param>
         [Obsolete("请使用FromXls替代此方法")]
         public static ScheduleEntity LoadFromXlsStream(Stream inputStream) => FromXls(inputStream);
+
         /// <summary>
         ///     从已经打打开的XLS流中读取并创建课表
         /// </summary>
         /// <param name="inputStream">输入的流</param>
-        public static ScheduleEntity FromXls(Stream inputStream)
+        /// <param name="region">所属的校区</param>
+        public static ScheduleEntity FromXls(Stream inputStream, Region region = Region.Harbin)
         {
+            var cp = new ScheduleConst(region);
             //var res = new ResourceManager(typeof(ScheduleMasterString));
             //Fix codepage
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
@@ -274,16 +282,18 @@ namespace HitRefresh.Schedule
                     '春' => Semester.Spring,
                     '夏' => Semester.Summer,
                     _ => Semester.Autumn
-                });
+                },
+                cp.SemesterStarts);
 
             for (var i = 0; i < 7; i++) //列
                 for (var j = 0; j < 5; j++) //行
                 {
-                    var current = table.Rows[j + 2][i + 2] as string;
+                    var current = table.Rows[j + cp.RowOffset][i + cp.ColumnOffset] as string;
                     if (string.IsNullOrWhiteSpace(current))
                         continue;
-                    var next = table.Rows[j + 3][i + 2] as string;
-                    var currentCourses = current.Replace("周\n", "周", StringComparison.CurrentCulture).Split('\n');
+                    var next = table.Rows[j + cp.RowOffset+1][i + cp.ColumnOffset] as string;
+                    var currentCourses = cp.CellPreprocessing(current)
+                        .Split('\n');
 
                     if (currentCourses.Length % 2 != 0)
                         throw new Exception(ScheduleMasterString.课表格式错误);
@@ -291,10 +301,10 @@ namespace HitRefresh.Schedule
                     {
                         var courseName = currentCourses[c];
                         var isLab = false;
-                        if (courseName.Contains("(实验)", StringComparison.CurrentCultureIgnoreCase))
+                        if (courseName.Contains(cp.ExperimentLabel, StringComparison.CurrentCultureIgnoreCase))
                         {
                             isLab = true;
-                            courseName = courseName.Replace("(实验)", "", StringComparison.CurrentCultureIgnoreCase);
+                            courseName = courseName.Replace(cp.ExperimentLabel, "", StringComparison.CurrentCultureIgnoreCase);
                         }
                         if (!schedule.Entries.Contains(courseName))
                         {
@@ -306,7 +316,8 @@ namespace HitRefresh.Schedule
                                 (CourseTime)(j + 1),
                                 current == next,
                                 isLab,
-                                currentCourses[c + 1]);
+                                currentCourses[c + 1],
+                                cp);
                     }
 
                     if (current == next) j++;

@@ -12,6 +12,8 @@ namespace HitRefresh.Schedule
     /// </summary>
     public class CourseSubEntry:IEnumerable<(int,CourseCell)>
     {
+        private IList<TimeSpan> _startTimes;
+
         /// <summary>
         /// 储存到json
         /// </summary>
@@ -25,7 +27,8 @@ namespace HitRefresh.Schedule
                 IsLab = IsLab,
                 IsLongCourse = IsLongCourse,
                 DayOfWeek = DayOfWeek,
-                WeekInformation = WeekInformation
+                WeekInformation = WeekInformation,
+                StartTimes=_startTimes
             });
         }
         private CourseSubEntry()
@@ -34,6 +37,7 @@ namespace HitRefresh.Schedule
         }
         private class CourseSubEntryJson
         {
+            public IList<TimeSpan> StartTimes { get; set; } = new List<TimeSpan>();
             /// <summary>
             /// 课程名称
             /// </summary>
@@ -85,9 +89,8 @@ namespace HitRefresh.Schedule
                 DayOfWeek=j.DayOfWeek,
                 IsLab=j.IsLab
                 
-
-
             };
+            r._startTimes = j.StartTimes;
             foreach (var (i,obj) in j.WeekInformation)
             {
                 r.WeekInformation.Add(i, obj);
@@ -104,6 +107,7 @@ namespace HitRefresh.Schedule
         /// </summary>
         [JsonIgnore]
         public int MaxWeek => WeekInformation.Keys.Max();
+
         /// <summary>
         /// 新建一个课程条目的子条目
         /// </summary>
@@ -113,7 +117,10 @@ namespace HitRefresh.Schedule
         /// <param name="isLongCourse"></param>
         /// <param name="isLab"></param>
         /// <param name="weekExpression"></param>
-        internal CourseSubEntry(string courseName, DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, bool isLab, string weekExpression)
+        /// <param name="constProvider"></param>
+        internal CourseSubEntry(string courseName, DayOfWeek dayOfWeek, 
+            CourseTime courseTime, bool isLongCourse, bool isLab, string weekExpression,
+            ScheduleConst constProvider)
         {
             CourseName = courseName;
             DayOfWeek = dayOfWeek;
@@ -122,7 +129,7 @@ namespace HitRefresh.Schedule
             IsLab = isLab;
 
             //Parse Week Expression
-            weekExpression = weekExpression.RemoveCommaSpace();
+            weekExpression = constProvider.RemoveCommaSpace(weekExpression);
             Logger.LogInformation("WE-Parsing: " + weekExpression);
 
             var currentTeacher = "";
@@ -130,12 +137,12 @@ namespace HitRefresh.Schedule
             var timeTeacherMap = new Dictionary<string, string>();
             var timeLocationMap = new Dictionary<string, string>();
 
-            foreach (var match in ScheduleExpressionUnitRegex.Matches(weekExpression))
+            foreach (var match in constProvider.ScheduleExpressionUnitRegex.Matches(weekExpression))
             {
                 var unit = match.ToString();
-                var unitType = LocationRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Location :
-                TeacherNameRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Teacher :
-                CourseTimeRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Time :
+                var unitType = constProvider.LocationRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Location :
+                    constProvider.TeacherNameRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Teacher :
+                    constProvider.CourseTimeRegex.IsMatch(match.ToString()) ? ScheduleExpressionUnitType.Time :
                 ScheduleExpressionUnitType.Unknown;
                 Logger.LogInformation($"\t{unit} as {unitType}");
 
@@ -168,7 +175,7 @@ namespace HitRefresh.Schedule
 
             foreach (var time in timeTeacherMap.Keys)
             {
-                foreach (var weekIndex in time.ToIntSequence())
+                foreach (var weekIndex in constProvider.ToIntSequence(time))
                 {
                     WeekInformation.Add(weekIndex, new CourseCell
                     {
@@ -179,6 +186,7 @@ namespace HitRefresh.Schedule
                 }
             }
 
+            _startTimes = constProvider.StartTimes;
         }
         /// <summary>
         /// 是否为实验课
@@ -232,7 +240,7 @@ namespace HitRefresh.Schedule
         ///     课程开始的时间距离0点的时长
         /// </summary>
         [JsonIgnore]
-        public TimeSpan StartTime => StartTimes[(int)CourseTime];
+        public TimeSpan StartTime => _startTimes[(int)CourseTime];
         /// <summary>
         /// 周数信息，包含上课的周和对应的教师、教室
         /// AF: int周数->(str教师,str教室)

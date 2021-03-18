@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>2.2</Version>
+    <Version>3.0</Version>
     <Authors>HitReFreSH</Authors>
     <TargetFrameworks>net5</TargetFrameworks>
     <LangVersion>8.0</LangVersion>

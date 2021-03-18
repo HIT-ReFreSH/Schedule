@@ -97,6 +97,7 @@ namespace HitRefresh.Schedule
         /// </summary>
         [JsonIgnore]
         public int MaxWeek => SubEntries.Select(e => e.MaxWeek).Max();
+
         /// <summary>
         /// 添加子条目
         /// </summary>
@@ -105,10 +106,12 @@ namespace HitRefresh.Schedule
         /// <param name="isLongCourse"></param>
         /// <param name="isLab"></param>
         /// <param name="weekExpression"></param>
+        /// <param name="const"></param>
         /// <returns></returns>
-        public CourseSubEntry AddSubEntry(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, bool isLab, string weekExpression)
+        public CourseSubEntry AddSubEntry(DayOfWeek dayOfWeek, CourseTime courseTime, 
+            bool isLongCourse, bool isLab, string weekExpression, ScheduleConst @const)
         {
-            var r = new CourseSubEntry(CourseName, dayOfWeek, courseTime, isLongCourse, isLab, weekExpression);
+            var r = new CourseSubEntry(CourseName, dayOfWeek, courseTime, isLongCourse, isLab, weekExpression,@const);
             AddSubEntry(r);
             return r;
 
