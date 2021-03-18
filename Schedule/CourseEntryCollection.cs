@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace HitRefresh.Schedule
 {
     /// <summary>
-    /// 课程的集合
+    ///     课程的集合
     /// </summary>
     public class CourseEntryCollection : KeyedCollection<string, CourseEntry>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetKeyForItem(CourseEntry item)
         {
-            return item?.CourseName;
+            return item.CourseName;
         }
     }
 }

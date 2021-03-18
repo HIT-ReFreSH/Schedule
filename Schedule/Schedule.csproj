@@ -2,20 +2,20 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>2.2</Version>
+    <Version>3.0</Version>
     <Authors>HitReFreSH</Authors>
     <TargetFrameworks>net5</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <Nullable>enable</Nullable>
     <RootNamespace>HitRefresh.Schedule</RootNamespace>
     <PackageProjectUrl>https://github.com/HIT-ReFreSH/Schedule</PackageProjectUrl>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <PackageReleaseNotes>Adds IEnumerable to the schedule.</PackageReleaseNotes>
+    <PackageReleaseNotes>Remove junks.</PackageReleaseNotes>
     <Description>Helps to convert schedule of HIT.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -25,37 +25,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-    <PackageReference Include="Ical.Net" Version="4.1.11" />
+    <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
+    <PackageReference Include="Ical.Net.NetCore" Version="4.1.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="PlasticMetal.MobileSuit" Version="2.5.0" />
-    <PackageReference Include="System.Reflection.TypeExtensions" Version="4.7.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
-
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="ScheduleMasterString.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ScheduleMasterString.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="ScheduleMasterString.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ScheduleMasterString.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>
