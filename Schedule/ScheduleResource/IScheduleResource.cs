@@ -10,6 +10,21 @@ namespace HitRefresh.Schedule.ScheduleResource
     public interface IScheduleResource
     {
         /// <summary>
+        /// 利用地区数据创建资源
+        /// </summary>
+        /// <param name="region"></param>
+        /// <returns></returns>
+        static IScheduleResource Create(ScheduleRegion region)
+        {
+            return region switch
+            {
+
+                ScheduleRegion.Shenzhen => new ShenzhenResource(),
+                ScheduleRegion.Harbin => new HarbinResource(),
+                _=>throw new ArgumentOutOfRangeException()
+            };
+        }
+        /// <summary>
         /// 每学期开始时间
         /// </summary>
         List<DateTime> SemesterStarts { get; }
@@ -74,5 +89,13 @@ namespace HitRefresh.Schedule.ScheduleResource
         /// <param name="origin">处理前的字符串</param>
         /// <returns>处理后符合标准的字符串</returns>
         string CellPreprocessing(string origin);
+
+        /// <summary>
+        ///     第几节课
+        /// </summary>
+        /// <param name="courseTime"></param>
+        /// <returns></returns>
+        string CourseTimeToFriendlyName(CourseTime courseTime);
+
     }
 }

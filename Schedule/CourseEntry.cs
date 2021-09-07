@@ -48,6 +48,14 @@ namespace HitRefresh.Schedule
         {
             SubEntries.Remove(content);
         }
+        /// <summary>
+        ///     移除指定的子条目
+        /// </summary>
+        /// <param name="index"></param>
+        public void RemoveSubEntryAt(int index)
+        {
+            SubEntries.RemoveAt(index);
+        }
 
         /// <summary>
         ///     添加内容

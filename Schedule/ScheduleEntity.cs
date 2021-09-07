@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Globalization;
@@ -18,7 +19,7 @@ namespace HitRefresh.Schedule
     /// <summary>
     ///     课表实例
     /// </summary>
-    public class ScheduleEntity
+    public class ScheduleEntity 
     {
         /// <summary>
         ///     指定年份和学期创建空的课表
@@ -314,5 +315,6 @@ namespace HitRefresh.Schedule
         {
             return Entries.ToImmutableArray();
         }
+
     }
 }

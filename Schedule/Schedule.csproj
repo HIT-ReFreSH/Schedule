@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>3.0</Version>
+    <Version>3.1.00</Version>
     <Authors>HitReFreSH</Authors>
     <TargetFrameworks>net5</TargetFrameworks>
     <Nullable>enable</Nullable>
@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <PackageReleaseNotes>Remove junks.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update 2021 Fall.</PackageReleaseNotes>
     <Description>Helps to convert schedule of HIT.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -25,8 +25,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ExcelDataReader" Version="3.7.0-develop00310" />
-    <PackageReference Include="ExcelDataReader.DataSet" Version="3.7.0-develop00310" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="Ical.Net.NetCore" Version="4.1.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
       <PrivateAssets>all</PrivateAssets>

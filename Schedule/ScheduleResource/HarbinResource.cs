@@ -9,21 +9,22 @@ namespace HitRefresh.Schedule.ScheduleResource
     /// <summary>
     ///     哈尔滨工业大学本部课表资源
     /// </summary>
-    public class HarbinResource : IScheduleResource
+    internal class HarbinResource : ScheduleResource
     {
         /// <inheritdoc />
-        public List<DateTime> SemesterStarts { get; } = new()
+        public override List<DateTime> SemesterStarts { get; } = new()
         {
             new(2020, 02, 24),
             new(2020, 06, 29),
             new(2020, 09, 07),
             new(2021, 03, 08),
-            new(2021, 07, 12)
+            new(2021, 07, 12),
+            new(2021, 09, 06)
         };
 
 
         /// <inheritdoc />
-        public List<TimeSpan> StartTimes { get; } = new()
+        public override List<TimeSpan> StartTimes { get; } = new()
         {
             new(12, 30, 00),
             new(08, 00, 00),
@@ -35,23 +36,23 @@ namespace HitRefresh.Schedule.ScheduleResource
 
 
         /// <inheritdoc />
-        public Regex TeacherNameRegex { get; } = new(@"^[\u4e00-\u9fa5^0-9]{2,4}$|^(\w+\s?)+$");
+        public override Regex TeacherNameRegex { get; } = new(@"^[\u4e00-\u9fa5^0-9]{2,4}$|^(\w+\s?)+$");
 
 
         /// <inheritdoc />
-        public Regex CourseTimeRegex { get; } = new(@"^\[(((\d+)|((\d+)\-(\d+)))(单|双)?(\|)?)+\](单|双)?$");
+        public override Regex CourseTimeRegex { get; } = new(@"^\[(((\d+)|((\d+)\-(\d+)))(单|双)?(\|)?)+\](单|双)?$");
 
         /// <inheritdoc />
-        public Regex LocationRegex { get; } = new(@"^([\u4e00-\u9fa5]+|[A-Z]{1,2})\d{2,5}$");
+        public override Regex LocationRegex { get; } = new(@"^([\u4e00-\u9fa5]+|[A-Z]{1,2})\d{2,5}$");
 
         /// <inheritdoc />
-        public Regex ScheduleExpressionUnitRegex { get; } =
+        public override Regex ScheduleExpressionUnitRegex { get; } =
             new(
                 @"(([\u4e00-\u9fa5]+|[A-Z]{1,2})\d{2,5})|(\[(((\d+)|((\d+)\-(\d+)))(单|双)?(\|)?)+\](单|双)?)|([\u4e00-\u9fa5]{2,4}|(\w+\s?)+)");
 
 
         /// <inheritdoc />
-        public string RemoveCommaSpace(string source)
+        public override string RemoveCommaSpace(string source)
         {
             return source
                 .Replace("单周", "单", StringComparison.CurrentCultureIgnoreCase)
@@ -62,7 +63,7 @@ namespace HitRefresh.Schedule.ScheduleResource
         }
 
         /// <inheritdoc />
-        public IEnumerable<int> ToIntSequence(string source)
+        public override IEnumerable<int> ToIntSequence(string source)
         {
             if (!CourseTimeRegex.IsMatch(source)
                 || source == null) throw new ArgumentOutOfRangeException(nameof(source), source, null);
@@ -100,16 +101,16 @@ namespace HitRefresh.Schedule.ScheduleResource
         }
 
         /// <inheritdoc />
-        public int ColumnOffset { get; } = 2;
+        public override int ColumnOffset => 2;
 
         /// <inheritdoc />
-        public int RowOffset { get; } = 2;
+        public override int RowOffset => 2;
 
         /// <inheritdoc />
-        public string ExperimentLabel { get; } = "(实验)";
+        public override string ExperimentLabel => "(实验)";
 
         /// <inheritdoc />
-        public string CellPreprocessing(string origin)
+        public override string CellPreprocessing(string origin)
         {
             return origin.Replace("周\n", "周", StringComparison.CurrentCulture);
         }
