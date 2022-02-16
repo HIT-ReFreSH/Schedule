@@ -9,6 +9,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using ExcelDataReader;
 using HitRefresh.Schedule.ScheduleResource;
+using HitRefresh.HitGeneralServices.WeChatServiceHall;
 using Ical.Net;
 using Ical.Net.CalendarComponents;
 using Ical.Net.DataTypes;
@@ -166,7 +167,84 @@ namespace HitRefresh.Schedule
         {
             Entries.Add(entry);
         }
+        /// <summary>
+        /// 从微信公众号课表(WScheduleEntry)获取信息
+        /// </summary>
+        /// <param name="year"></param>
+        /// <param name="semester"></param>
+        /// <param name="entries"></param>
+        /// <returns></returns>
+        public static ScheduleEntity FromWeb(
+            int year, Semester semester, List<WScheduleEntry> entries)
+        {
+            var courseTimes = new Dictionary<string, CourseTime>()
+            {
+                {"第1,2节", CourseTime.C12},
+                {"第3,4节", CourseTime.C34},
+                {"第5,6节", CourseTime.C56},
+                {"第7,8节", CourseTime.C78},
+                {"第9,10节", CourseTime.C9A},
+                {"第11,12节", CourseTime.C9A},
+            };
+            var startDateOrigin = entries[0].Module.Dates[0].Date.Split('/');
+            var startDate = new DateTime(year, 
+                int.Parse(startDateOrigin[0]), int.Parse(startDateOrigin[1]));
+            var startDateIndex = (year - 2020) * 3 + (int) semester;
+            while (startDateIndex >= ResourceProvider.Resource.SemesterStarts.Count)
+            {
+                ResourceProvider.Resource.SemesterStarts.Add(startDate);
+            }
+            ResourceProvider.Resource.SemesterStarts[startDateIndex]=startDate;
+            var schedule = new ScheduleEntity(
+                year,
+                semester);
+            var dict = new Dictionary<(string, DayOfWeek, CourseTime),
+                Dictionary<int, CourseCell>>();
+            var i = 1;
+            foreach (var w in entries)
+            {
 
+                foreach (var c in w.Module.Courses)
+                {
+                    var key = (c.Name, (DayOfWeek) ((int.Parse(c.DayOfWeek) + 1) % 7),
+                        courseTimes[c.CourseTime]);
+                    if (!dict.ContainsKey(key))
+                    {
+                        dict.Add(key, new());
+                    }
+
+                    dict[key].Add(i, new CourseCell()
+                    {
+                        Name = c.Name, Location = c.Location, Teacher = c.Teacher
+                    });
+                    
+                }
+
+                i++;
+            }
+
+            foreach (var ((name, dow, courseTime), weekInfo) in dict)
+            {
+                var courseName = name;
+                var isLab = false;
+                if (courseName.Contains("(实验)", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    isLab = true;
+                    courseName = courseName.Replace("(实验)", "", StringComparison.CurrentCultureIgnoreCase);
+                }
+
+                if (!schedule.Entries.Contains(courseName))
+                    schedule.Entries.Add(new() { CourseName = courseName });
+                schedule.Entries[courseName].AddContent(
+                    dow,
+                    courseTime,
+                    false,
+                    isLab,
+                    weekInfo);
+            }
+
+            return schedule;
+        }
         /// <summary>
         ///     从已经打打开的XLS流中读取并创建课表
         /// </summary>

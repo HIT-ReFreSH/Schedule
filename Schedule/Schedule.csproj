@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>3.1.00</Version>
+    <Version>4.0</Version>
     <Authors>HitReFreSH</Authors>
-    <TargetFrameworks>net5</TargetFrameworks>
+    <TargetFrameworks>net6</TargetFrameworks>
     <Nullable>enable</Nullable>
     <RootNamespace>HitRefresh.Schedule</RootNamespace>
     <PackageProjectUrl>https://github.com/HIT-ReFreSH/Schedule</PackageProjectUrl>
@@ -15,7 +15,7 @@
 
   <PropertyGroup>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <PackageReleaseNotes>Update 2021 Fall.</PackageReleaseNotes>
+    <PackageReleaseNotes>Update 2022 Spring: Add Wechat Schedule Support.</PackageReleaseNotes>
     <Description>Helps to convert schedule of HIT.</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
@@ -27,12 +27,13 @@
   <ItemGroup>
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+    <PackageReference Include="HitGeneralServices" Version="0.5.1" />
     <PackageReference Include="Ical.Net.NetCore" Version="4.1.11" />
-    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="5.0.3">
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="System.Text.Encoding.CodePages" Version="5.0.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

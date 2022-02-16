@@ -79,7 +79,17 @@ namespace HitRefresh.Schedule
                     Location = timeLocationMap[time]
                 });
         }
-
+        internal CourseContent(string courseName, DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse,
+    bool isLab, Dictionary<int, CourseCell> weekInformation)
+        {
+            CourseName = courseName;
+            DayOfWeek = dayOfWeek;
+            CourseTime = courseTime;
+            IsLongCourse = isLongCourse;
+            IsLab = isLab;
+            WeekInformation= weekInformation;
+            
+        }
         /// <summary>
         ///     课程名称
         /// </summary>

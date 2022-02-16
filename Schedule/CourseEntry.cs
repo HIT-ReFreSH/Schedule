@@ -74,7 +74,22 @@ namespace HitRefresh.Schedule
             return entry;
         }
 
-
+        /// <summary>
+        ///     添加内容
+        /// </summary>
+        /// <param name="dayOfWeek"></param>
+        /// <param name="courseTime"></param>
+        /// <param name="isLongCourse"></param>
+        /// <param name="isLab"></param>
+        /// <param name="weekExpression"></param>
+        /// <returns>添加内容</returns>
+        public CourseContent AddContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, bool isLab,
+            Dictionary<int,CourseCell> weekExpression)
+        {
+            var entry = new CourseContent(CourseName, dayOfWeek, courseTime, isLongCourse, isLab, weekExpression);
+            AddContent(entry);
+            return entry;
+        }
         private void AddContent(CourseContent e)
         {
             SubEntries.Add(e);
