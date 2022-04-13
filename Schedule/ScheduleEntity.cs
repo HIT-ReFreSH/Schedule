@@ -206,8 +206,9 @@ namespace HitRefresh.Schedule
 
                 foreach (var c in w.Module.Courses)
                 {
+                    if (!courseTimes.TryGetValue(c.CourseTime, out var ct)) continue;
                     var key = (c.Name, (DayOfWeek) ((int.Parse(c.DayOfWeek) + 1) % 7),
-                        courseTimes[c.CourseTime]);
+                        ct);
                     if (!dict.ContainsKey(key))
                     {
                         dict.Add(key, new());
