@@ -64,7 +64,7 @@ public class CourseContent : IComparable<CourseContent>
                 case ScheduleExpressionUnitType.Unknown:
                     throw new ArgumentException(weekExpression, nameof(weekExpression), null);
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(unitType),unitType.ToString());
             }
         }
 
@@ -159,7 +159,7 @@ public class CourseContent : IComparable<CourseContent>
     public int CompareTo(CourseContent? other)
     {
         if (ReferenceEquals(this, other)) return 0;
-        if (ReferenceEquals(null, other)) return 1;
+        if (other is null) return 1;
         return (int) DayOfWeek * 10 + CourseTime - (int) other.DayOfWeek * 10 - other.CourseTime;
     }
 

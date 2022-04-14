@@ -27,6 +27,7 @@
   <ItemGroup>
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
+    <PackageReference Include="HitGeneralServices" Version="0.5.1" />
     <PackageReference Include="Ical.Net.NetCore" Version="4.1.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -37,9 +38,5 @@
 
   <ItemGroup>
     <None Include="icon.png" Pack="true" PackagePath="\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\HitRefresh.HitGeneralServices\src\HitRefresh.HitGeneralServices.csproj" />
   </ItemGroup>
 </Project>

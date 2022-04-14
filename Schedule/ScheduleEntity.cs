@@ -253,7 +253,7 @@ public class ScheduleEntity
         //I want to say f-word here, but no idea to microsoft, mono or ExcelDataReader
         using var reader = ExcelReaderFactory.CreateReader(inputStream);
         var table = reader.AsDataSet().Tables[0];
-        if (!(table.Rows[0][0] is string tableHead))
+        if (table.Rows[0][0] is not string tableHead)
             throw new ArgumentException("课表格式错误");
 
         var schedule = new ScheduleEntity(
