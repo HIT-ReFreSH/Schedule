@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>4.0.2</Version>
+    <Version>4.0.3</Version>
     <Authors>HitReFreSH</Authors>
     <TargetFrameworks>net6</TargetFrameworks>
     <Nullable>enable</Nullable>
@@ -27,7 +27,7 @@
   <ItemGroup>
     <PackageReference Include="ExcelDataReader" Version="3.6.0" />
     <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
-    <PackageReference Include="HitGeneralServices" Version="0.5.1" />
+    <PackageReference Include="HitGeneralServices" Version="0.5.2" />
     <PackageReference Include="Ical.Net.NetCore" Version="4.1.11" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
