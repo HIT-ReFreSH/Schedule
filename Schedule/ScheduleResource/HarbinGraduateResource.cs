@@ -9,7 +9,7 @@ namespace HitRefresh.Schedule.ScheduleResource;
 /// <summary>
 ///     哈尔滨工业大学本部课表资源
 /// </summary>
-internal class HarbinResource : ScheduleResource
+internal class HarbinGraduateResource : ScheduleResource
 {
     /// <inheritdoc />
     public override List<DateTime> SemesterStarts { get; } = new()

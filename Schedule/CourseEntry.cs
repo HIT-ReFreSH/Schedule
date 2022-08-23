@@ -66,7 +66,7 @@ public class CourseEntry
     /// <param name="isLab"></param>
     /// <param name="weekExpression"></param>
     /// <returns>添加内容</returns>
-    public CourseContent AddContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, bool isLab,
+    public CourseContent AddContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, CourseContentType isLab,
         string weekExpression)
     {
         var entry = new CourseContent(CourseName, dayOfWeek, courseTime, isLongCourse, isLab, weekExpression);
@@ -83,7 +83,7 @@ public class CourseEntry
     /// <param name="isLab"></param>
     /// <param name="weekExpression"></param>
     /// <returns>添加内容</returns>
-    public CourseContent AddContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, bool isLab,
+    public CourseContent AddContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse, CourseContentType isLab,
         Dictionary<int, CourseCell> weekExpression)
     {
         var entry = new CourseContent(CourseName, dayOfWeek, courseTime, isLongCourse, isLab, weekExpression);
@@ -104,5 +104,10 @@ public class CourseEntry
     {
         SubEntries.Sort();
         return SubEntries.ToImmutableArray();
+    }
+
+    public void AddGraduateContent(DayOfWeek dayOfWeek, CourseTime courseTime, bool b, CourseContentType isLab, string currentCourse)
+    {
+        throw new NotImplementedException();
     }
 }

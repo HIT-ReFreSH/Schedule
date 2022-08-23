@@ -7,6 +7,12 @@ using HitRefresh.Schedule.ScheduleResource;
 
 namespace HitRefresh.Schedule;
 
+public enum CourseContentType
+{
+    Standard=0,
+    Lab=1,
+    Exam=2
+}
 /// <summary>
 ///     课程代表条目内容，即课程的时间。
 /// </summary>
@@ -23,13 +29,13 @@ public class CourseContent : IComparable<CourseContent>
     /// <param name="weekExpression"></param>
     [JsonConstructor]
     internal CourseContent(string courseName, DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse,
-        bool isLab, string weekExpression)
+        CourseContentType isLab, string weekExpression)
     {
         CourseName = courseName;
         DayOfWeek = dayOfWeek;
         CourseTime = courseTime;
         IsLongCourse = isLongCourse;
-        IsLab = isLab;
+        Type = isLab;
 
         //Parse Week Expression
         weekExpression = ResourceProvider.Resource.RemoveCommaSpace(weekExpression);
@@ -81,13 +87,13 @@ public class CourseContent : IComparable<CourseContent>
     }
 
     internal CourseContent(string courseName, DayOfWeek dayOfWeek, CourseTime courseTime, bool isLongCourse,
-        bool isLab, Dictionary<int, CourseCell> weekInformation)
+        CourseContentType isLab, Dictionary<int, CourseCell> weekInformation)
     {
         CourseName = courseName;
         DayOfWeek = dayOfWeek;
         CourseTime = courseTime;
         IsLongCourse = isLongCourse;
-        IsLab = isLab;
+        Type = isLab;
         WeekInformation = weekInformation;
     }
 
@@ -105,7 +111,7 @@ public class CourseContent : IComparable<CourseContent>
     /// <summary>
     ///     是否为实验课
     /// </summary>
-    public bool IsLab { get; set; }
+    public CourseContentType Type { get; set; }
 
     /// <summary>
     ///     在周几上课
