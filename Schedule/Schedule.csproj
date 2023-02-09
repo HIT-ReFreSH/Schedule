@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <PackageId>HitRefresh.Schedule</PackageId>
-    <Version>4.1</Version>
+    <Version>4.1.1</Version>
     <Authors>HitReFreSH</Authors>
     <TargetFrameworks>net6</TargetFrameworks>
     <Nullable>enable</Nullable>

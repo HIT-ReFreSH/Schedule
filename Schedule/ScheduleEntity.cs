@@ -43,7 +43,7 @@ public class ScheduleEntity
     /// <summary>
     ///     课程最大持续周数
     /// </summary>
-    public int MaxWeek => Entries.Select(e => e.MaxWeek).Max();
+    public int MaxWeek => Entries.Count==0? 0: Entries.Select(e => e.MaxWeek).Max();
 
     /// <summary>
     ///     日历映射系统
